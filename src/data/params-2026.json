@@ -1,0 +1,557 @@
+{
+ "_lisezmoi": "Regeln und Beträge des Vorlagenrechners. Jede Zahl ist an der genannten Quelle gelesen (retrieved_at); im Code steht keine.",
+ "year": 2026,
+ "retrieved_at": "2026-11-13",
+ "valid_from": "2026-01-01",
+ "valid_to": "2026-12-31",
+ "miete": {
+  "mieterMonate": 3,
+  "vermieterStufenJahre": [
+   5,
+   8
+  ],
+  "vermieterPlusMonate": 3,
+  "karenzWerktage": 3,
+  "moebliertStichtag": 15,
+  "kautionMaxMonatsmieten": 3,
+  "kautionRaten": 3
+ },
+ "arbeit": {
+  "grundWochen": 4,
+  "probezeitWochen": 2,
+  "probezeitMaxMonate": 6,
+  "staffel": [
+   [
+    2,
+    1
+   ],
+   [
+    5,
+    2
+   ],
+   [
+    8,
+    3
+   ],
+   [
+    10,
+    4
+   ],
+   [
+    12,
+    5
+   ],
+   [
+    15,
+    6
+   ],
+   [
+    20,
+    7
+   ]
+  ],
+  "klagefristWochen": 3,
+  "abfindungFaktor": 0.5,
+  "sperrzeitWochen": 12
+ },
+ "verbraucher": {
+  "maxErstlaufzeitMonate": 24,
+  "kuendigungMaxMonate": 1,
+  "neuesRechtAb": "2022-03-01",
+  "tkgMaxMonate": 24,
+  "tkgFristMonate": 1,
+  "vvgMinMonate": 1,
+  "vvgMaxMonate": 3,
+  "vvgLangJahre": 3,
+  "vvgLangFristMonate": 3,
+  "grundversorgungWochen": 2
+ },
+ "verzug": {
+  "verbraucherPunkte": 5,
+  "unternehmerPunkte": 9,
+  "pauschale": 40,
+  "tageRechnung": 30,
+  "basiszins": [
+   {
+    "ab": "2024-01-01",
+    "satz": 3.62
+   },
+   {
+    "ab": "2024-07-01",
+    "satz": 3.37
+   },
+   {
+    "ab": "2025-01-01",
+    "satz": 2.27
+   },
+   {
+    "ab": "2025-07-01",
+    "satz": 1.27
+   },
+   {
+    "ab": "2026-01-01",
+    "satz": 1.27
+   },
+   {
+    "ab": "2026-07-01",
+    "satz": 1.52
+   }
+  ]
+ },
+ "schenkung": {
+  "freibetraege": {
+   "ehegatte": 500000,
+   "kind": 400000,
+   "enkel": 200000,
+   "eltern": 20000,
+   "geschwister": 20000,
+   "nichte": 20000,
+   "andere": 20000
+  },
+  "zehnJahre": 10,
+  "anzeigeMonate": 3
+ },
+ "sources": {
+  "bgb573c": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__573c.html",
+   "label": {
+    "de": "BGB § 573c: Fristen der ordentlichen Kündigung (Wohnraum)",
+    "en": "German Civil Code (BGB), section 573c: notice periods for residential tenancies"
+   }
+  },
+  "bgb549": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__549.html",
+   "label": {
+    "de": "BGB § 549: Wohnraum mit eingeschränktem Mieterschutz",
+    "en": "BGB section 549: rooms with reduced tenant protection"
+   }
+  },
+  "bgb568": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__568.html",
+   "label": {
+    "de": "BGB § 568: Form und Inhalt der Kündigung (Schriftform)",
+    "en": "BGB section 568: form of a tenancy notice (written form)"
+   }
+  },
+  "bgb551": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__551.html",
+   "label": {
+    "de": "BGB § 551: Begrenzung und Anlage von Mietsicherheiten",
+    "en": "BGB section 551: limit and investment of rent deposits"
+   }
+  },
+  "bgb540": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__540.html",
+   "label": {
+    "de": "BGB § 540: Gebrauchsüberlassung an Dritte",
+    "en": "BGB section 540: letting third parties use the property"
+   }
+  },
+  "bgb553": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__553.html",
+   "label": {
+    "de": "BGB § 553: Gestattung der Gebrauchsüberlassung an Dritte",
+    "en": "BGB section 553: permission to sublet part of a home"
+   }
+  },
+  "bgb550": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__550.html",
+   "label": {
+    "de": "BGB § 550: Form des Mietvertrags",
+    "en": "BGB section 550: form of a lease"
+   }
+  },
+  "bgb575": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__575.html",
+   "label": {
+    "de": "BGB § 575: Zeitmietvertrag",
+    "en": "BGB section 575: fixed-term tenancy"
+   }
+  },
+  "bgb535": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__535.html",
+   "label": {
+    "de": "BGB § 535: Inhalt und Hauptpflichten des Mietvertrags",
+    "en": "BGB section 535: content and main duties of a lease"
+   }
+  },
+  "bgb622": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__622.html",
+   "label": {
+    "de": "BGB § 622: Kündigungsfristen bei Arbeitsverhältnissen",
+    "en": "BGB section 622: notice periods in employment"
+   }
+  },
+  "bgb623": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__623.html",
+   "label": {
+    "de": "BGB § 623: Schriftform der Kündigung (Arbeitsverhältnis)",
+    "en": "BGB section 623: written form for ending employment"
+   }
+  },
+  "bgb626": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__626.html",
+   "label": {
+    "de": "BGB § 626: Fristlose Kündigung aus wichtigem Grund",
+    "en": "BGB section 626: termination without notice for good cause"
+   }
+  },
+  "bgb309": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__309.html",
+   "label": {
+    "de": "BGB § 309 Nr. 9: Laufzeit bei Dauerschuldverhältnissen",
+    "en": "BGB section 309 no. 9: term of continuing contracts"
+   }
+  },
+  "bgb312k": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__312k.html",
+   "label": {
+    "de": "BGB § 312k: Kündigungsbutton bei Verträgen im Internet",
+    "en": "BGB section 312k: online cancellation button"
+   }
+  },
+  "egbgb229": {
+   "url": "https://www.gesetze-im-internet.de/bgbeg/art_229__60.html",
+   "label": {
+    "de": "EGBGB Art. 229 § 60: Übergangsvorschrift zum Gesetz für faire Verbraucherverträge",
+    "en": "Introductory Act to the BGB, Art. 229 section 60: transition rule for the Fair Consumer Contracts Act"
+   }
+  },
+  "bgb126": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__126.html",
+   "label": {
+    "de": "BGB § 126: Schriftform",
+    "en": "BGB section 126: written form"
+   }
+  },
+  "bgb130": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__130.html",
+   "label": {
+    "de": "BGB § 130: Wirksamwerden der Willenserklärung (Zugang)",
+    "en": "BGB section 130: when a declaration takes effect (receipt)"
+   }
+  },
+  "bgb187": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__187.html",
+   "label": {
+    "de": "BGB § 187: Fristbeginn",
+    "en": "BGB section 187: start of a period"
+   }
+  },
+  "bgb188": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__188.html",
+   "label": {
+    "de": "BGB § 188: Fristende",
+    "en": "BGB section 188: end of a period"
+   }
+  },
+  "bgb193": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__193.html",
+   "label": {
+    "de": "BGB § 193: Sonn- und Feiertag; Sonnabend",
+    "en": "BGB section 193: Sundays, public holidays and Saturdays"
+   }
+  },
+  "bgb167": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__167.html",
+   "label": {
+    "de": "BGB § 167: Erteilung der Vollmacht",
+    "en": "BGB section 167: granting a power of attorney"
+   }
+  },
+  "bgb174": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__174.html",
+   "label": {
+    "de": "BGB § 174: Einseitiges Rechtsgeschäft eines Bevollmächtigten",
+    "en": "BGB section 174: unilateral acts by an agent"
+   }
+  },
+  "bgb286": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__286.html",
+   "label": {
+    "de": "BGB § 286: Verzug des Schuldners",
+    "en": "BGB section 286: default of the debtor"
+   }
+  },
+  "bgb288": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__288.html",
+   "label": {
+    "de": "BGB § 288: Verzugszinsen und sonstiger Verzugsschaden",
+    "en": "BGB section 288: default interest and other damage"
+   }
+  },
+  "bgb247": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__247.html",
+   "label": {
+    "de": "BGB § 247: Basiszinssatz",
+    "en": "BGB section 247: base rate of interest"
+   }
+  },
+  "bundesbank": {
+   "url": "https://www.bundesbank.de/de/bundesbank/organisation/agb-und-regelungen/basiszinssatz-607820",
+   "label": {
+    "de": "Deutsche Bundesbank: Basiszinssatz nach § 247 BGB (Tabelle)",
+    "en": "Deutsche Bundesbank: base rate under section 247 BGB (table)"
+   }
+  },
+  "bgb433": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__433.html",
+   "label": {
+    "de": "BGB § 433: Vertragstypische Pflichten beim Kaufvertrag",
+    "en": "BGB section 433: duties under a contract of sale"
+   }
+  },
+  "bgb444": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__444.html",
+   "label": {
+    "de": "BGB § 444: Haftungsausschluss",
+    "en": "BGB section 444: exclusion of liability"
+   }
+  },
+  "bgb516": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__516.html",
+   "label": {
+    "de": "BGB § 516: Begriff der Schenkung",
+    "en": "BGB section 516: definition of a gift"
+   }
+  },
+  "bgb518": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__518.html",
+   "label": {
+    "de": "BGB § 518: Form des Schenkungsversprechens",
+    "en": "BGB section 518: form of a promise to give"
+   }
+  },
+  "erbstg15": {
+   "url": "https://www.gesetze-im-internet.de/erbstg_1974/__15.html",
+   "label": {
+    "de": "ErbStG § 15: Steuerklassen",
+    "en": "Inheritance and Gift Tax Act (ErbStG), section 15: tax classes"
+   }
+  },
+  "erbstg16": {
+   "url": "https://www.gesetze-im-internet.de/erbstg_1974/__16.html",
+   "label": {
+    "de": "ErbStG § 16: Freibeträge",
+    "en": "ErbStG section 16: tax-free allowances"
+   }
+  },
+  "erbstg14": {
+   "url": "https://www.gesetze-im-internet.de/erbstg_1974/__14.html",
+   "label": {
+    "de": "ErbStG § 14: Berücksichtigung früherer Erwerbe (zehn Jahre)",
+    "en": "ErbStG section 14: earlier gifts within ten years"
+   }
+  },
+  "erbstg30": {
+   "url": "https://www.gesetze-im-internet.de/erbstg_1974/__30.html",
+   "label": {
+    "de": "ErbStG § 30: Anzeige des Erwerbs",
+    "en": "ErbStG section 30: reporting a gift to the tax office"
+   }
+  },
+  "kschg1a": {
+   "url": "https://www.gesetze-im-internet.de/kschg/__1a.html",
+   "label": {
+    "de": "KSchG § 1a: Abfindungsanspruch bei betriebsbedingter Kündigung",
+    "en": "Protection Against Dismissal Act (KSchG), section 1a: severance on redundancy"
+   }
+  },
+  "kschg4": {
+   "url": "https://www.gesetze-im-internet.de/kschg/__4.html",
+   "label": {
+    "de": "KSchG § 4: Anrufung des Arbeitsgerichts (drei Wochen)",
+    "en": "KSchG section 4: three weeks to go to the labour court"
+   }
+  },
+  "sgb3_159": {
+   "url": "https://www.gesetze-im-internet.de/sgb_3/__159.html",
+   "label": {
+    "de": "SGB III § 159: Ruhen bei Sperrzeit",
+    "en": "Social Code III, section 159: benefit suspension (Sperrzeit)"
+   }
+  },
+  "tkg56": {
+   "url": "https://www.gesetze-im-internet.de/tkg_2021/__56.html",
+   "label": {
+    "de": "TKG § 56: Vertragslaufzeit, Kündigung nach stillschweigender Verlängerung",
+    "en": "Telecommunications Act (TKG), section 56: contract term and cancellation after renewal"
+   }
+  },
+  "vvg11": {
+   "url": "https://www.gesetze-im-internet.de/vvg_2008/__11.html",
+   "label": {
+    "de": "VVG § 11: Verlängerung, Kündigung",
+    "en": "Insurance Contract Act (VVG), section 11: renewal and cancellation"
+   }
+  },
+  "stromgvv20": {
+   "url": "https://www.gesetze-im-internet.de/stromgvv/__20.html",
+   "label": {
+    "de": "StromGVV § 20: Kündigung des Grundversorgungsvertrags",
+    "en": "Electricity Basic Supply Ordinance (StromGVV), section 20: cancelling basic supply"
+   }
+  },
+  "bghVertragsgenerator": {
+   "url": "https://www.bundesgerichtshof.de/SharedDocs/Pressemitteilungen/DE/2021/2021171.html",
+   "label": {
+    "de": "BGH, Urteil vom 9. September 2021, I ZR 113/20: Vertragsdokumentengenerator (Pressemitteilung 171/2021)",
+    "en": "Federal Court of Justice, judgment of 9 September 2021, I ZR 113/20: contract document generator (press release 171/2021)"
+   }
+  },
+  "bghSamstag": {
+   "url": "https://www.bundesgerichtshof.de/SharedDocs/Pressemitteilungen/DE/2005/2005065.html",
+   "label": {
+    "de": "BGH, Urteil vom 27. April 2005, VIII ZR 206/04: Sonnabend als Werktag (Pressemitteilung 65/2005)",
+    "en": "Federal Court of Justice, judgment of 27 April 2005, VIII ZR 206/04: Saturday as a working day (press release 65/2005)"
+   }
+  },
+  "ostern": {
+   "url": "https://www.ptb.de/cms/ptb/fachabteilungen/abt4/fb-44/ag-441/darstellung-der-gesetzlichen-zeit/wann-ist-ostern.html",
+   "label": {
+    "de": "Physikalisch-Technische Bundesanstalt: Wann ist Ostern?",
+    "en": "Physikalisch-Technische Bundesanstalt (PTB): When is Easter?"
+   }
+  },
+  "einigungsvertrag": {
+   "url": "https://www.gesetze-im-internet.de/einigvtr/art_2.html",
+   "label": {
+    "de": "Einigungsvertrag, Art. 2 Abs. 2: Tag der Deutschen Einheit",
+    "en": "Unification Treaty, Art. 2(2): German Unity Day"
+   }
+  },
+  "ftgBW": {
+   "url": "https://www.landesrecht-bw.de/bsbw/document/jlr-FeiertGBWrahmen",
+   "label": {
+    "de": "Baden-Württemberg: Feiertagsgesetz",
+    "en": "Baden-Württemberg: Public Holiday Act"
+   }
+  },
+  "ftgBY": {
+   "url": "https://www.gesetze-bayern.de/Content/Document/BayFTG-1",
+   "label": {
+    "de": "Bayern: Feiertagsgesetz (FTG), Art. 1",
+    "en": "Bavaria: Public Holiday Act, Art. 1"
+   }
+  },
+  "ftgBE": {
+   "url": "https://gesetze.berlin.de/perma?a=FeiertG_BE",
+   "label": {
+    "de": "Berlin: Gesetz über die Sonn- und Feiertage",
+    "en": "Berlin: Sunday and Public Holiday Act"
+   }
+  },
+  "ftgBB": {
+   "url": "https://bravors.brandenburg.de/gesetze/ftg_2015",
+   "label": {
+    "de": "Brandenburg: Feiertagsgesetz",
+    "en": "Brandenburg: Public Holiday Act"
+   }
+  },
+  "ftgHB": {
+   "url": "https://www.transparenz.bremen.de/metainformationen/gesetz-ueber-die-sonn-gedenk-und-feiertage-vom-12-november-1954-74780",
+   "label": {
+    "de": "Bremen: Gesetz über die Sonn-, Gedenk- und Feiertage",
+    "en": "Bremen: Sunday and Public Holiday Act"
+   }
+  },
+  "ftgHH": {
+   "url": "https://www.landesrecht-hamburg.de/bsha/document/jlr-FeiertGHArahmen",
+   "label": {
+    "de": "Hamburg: Feiertagsgesetz",
+    "en": "Hamburg: Public Holiday Act"
+   }
+  },
+  "ftgHE": {
+   "url": "https://www.rv.hessenrecht.hessen.de/bshe/document/jlr-FeiertGHE1952rahmen",
+   "label": {
+    "de": "Hessen: Hessisches Feiertagsgesetz",
+    "en": "Hesse: Public Holiday Act"
+   }
+  },
+  "ftgMV": {
+   "url": "https://www.landesrecht-mv.de/bsmv/document/jlr-FTGMVrahmen",
+   "label": {
+    "de": "Mecklenburg-Vorpommern: Feiertagsgesetz",
+    "en": "Mecklenburg-Western Pomerania: Public Holiday Act"
+   }
+  },
+  "ftgNI": {
+   "url": "https://www.mi.niedersachsen.de/themen/allgemeine_angelegenheiten_inneren/feiertagsrecht/feiertagsgesetz-61491.html",
+   "label": {
+    "de": "Niedersachsen: Niedersächsisches Gesetz über die Feiertage",
+    "en": "Lower Saxony: Public Holiday Act"
+   }
+  },
+  "ftgNW": {
+   "url": "https://recht.nrw.de/lrgv/gesetz/01012000-bekanntmachung-der-neufassung-des-gesetzes-ueber-die-sonn-und-feiertage/",
+   "label": {
+    "de": "Nordrhein-Westfalen: Feiertagsgesetz NW",
+    "en": "North Rhine-Westphalia: Public Holiday Act"
+   }
+  },
+  "ftgRP": {
+   "url": "https://landesrecht.rlp.de/bsrp/document/jlr-FeiertGRPrahmen",
+   "label": {
+    "de": "Rheinland-Pfalz: Landesgesetz über den Schutz der Sonn- und Feiertage",
+    "en": "Rhineland-Palatinate: Public Holiday Act"
+   }
+  },
+  "ftgSL": {
+   "url": "https://recht.saarland.de/perma?a=FeiertG_SL",
+   "label": {
+    "de": "Saarland: Gesetz über die Sonn- und Feiertage",
+    "en": "Saarland: Public Holiday Act"
+   }
+  },
+  "ftgSN": {
+   "url": "https://www.revosax.sachsen.de/vorschrift/3997-SaechsSFG",
+   "label": {
+    "de": "Sachsen: Gesetz über Sonn- und Feiertage im Freistaat Sachsen",
+    "en": "Saxony: Public Holiday Act"
+   }
+  },
+  "ftgST": {
+   "url": "https://www.landesrecht.sachsen-anhalt.de/perma?a=FeiertG_ST",
+   "label": {
+    "de": "Sachsen-Anhalt: Gesetz über die Sonn- und Feiertage",
+    "en": "Saxony-Anhalt: Public Holiday Act"
+   }
+  },
+  "ftgSH": {
+   "url": "https://www.gesetze-rechtsprechung.sh.juris.de/perma?a=FeiertG_SH",
+   "label": {
+    "de": "Schleswig-Holstein: Gesetz über Sonn- und Feiertage",
+    "en": "Schleswig-Holstein: Public Holiday Act"
+   }
+  },
+  "ftgTH": {
+   "url": "https://landesrecht.thueringen.de/bsth/document/jlr-FeiertGTHrahmen",
+   "label": {
+    "de": "Thüringen: Thüringer Feier- und Gedenktagsgesetz",
+    "en": "Thuringia: Public Holiday and Commemoration Act"
+   }
+  },
+  "bgb556": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__556.html",
+   "label": {
+    "de": "BGB § 556: Vereinbarungen über Betriebskosten",
+    "en": "BGB section 556: agreements on service charges"
+   }
+  },
+  "bgb556b": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__556b.html",
+   "label": {
+    "de": "BGB § 556b: Fälligkeit der Miete (dritter Werktag)",
+    "en": "BGB section 556b: when rent is due (third working day)"
+   }
+  },
+  "bgb546": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__546.html",
+   "label": {
+    "de": "BGB § 546: Rückgabepflicht des Mieters (auch des Untermieters)",
+    "en": "BGB section 546: return of the property, also by a subtenant"
+   }
+  }
+ }
+}

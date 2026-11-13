@@ -1,0 +1,9 @@
+---
+/** Vorlage einer Seite nach `page.doc` (components/outils/DocTool.tsx). */
+import DocTool from './outils/DocTool';
+import type { Locale } from '../i18n/routes';
+import type { ResumeClamp } from './outils/DocTool';
+interface Props { doc: string; lang: Locale; id: string; refDay: string; methodHref?: string; preset?: Record<string, string>; resume?: ResumeClamp }
+const { doc, lang, id, refDay, methodHref, preset, resume } = Astro.props;
+---
+<DocTool client:load docId={doc} lang={lang} id={id} refDay={refDay} methodHref={methodHref} preset={preset} resume={resume} />

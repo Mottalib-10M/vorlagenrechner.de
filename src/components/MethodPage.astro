@@ -1,0 +1,65 @@
+---
+/** Methode und Quellen (Vertrauensseite, RECETTE §8.2) : Gesetze, Fristberechnung, Feiertage, Basiszins, Grenzen, Tests. */
+import PageLayout from '../layouts/PageLayout.astro';
+import { route, type Locale } from '../i18n/routes';
+import { P, sourceUrl } from '../lib/engine/params';
+import type { SourceKey } from '../lib/engine/params';
+import * as M from '../lib/engine/index';
+import { helpers } from '../lib/helpers';
+import { breadcrumbSchema, webPageSchema } from '../lib/seo';
+import { CONTACT_EMAIL } from '../data/site-config';
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const H = helpers(lang);
+const { T, eur, num, date } = H;
+const title = T('Vorlagen und Fristen: unsere Methode und Quellen 2026', 'Templates and deadlines in Germany: our 2026 method');
+const description = T(
+  'Methode der Vorlagen: Gesetzestexte vom 13.11.2026, Fristberechnung nach §§ 187, 188 BGB, Feiertage der 16 Länder, Basiszins der Bundesbank, Grenzen und Tests.',
+  'Our method: statutes read on 13 Nov 2026, deadlines under sections 187 and 188 BGB, holidays of the 16 states, Bundesbank base rate, limits and tests.');
+const h1 = T('Methode der Vorlagen und Quellen', 'How the templates work, and their sources');
+const path = route('method', lang);
+const sources = (Object.keys(P.sources) as SourceKey[]).map((k) => ({ name: P.sources[k].label[lang], url: sourceUrl(k) }));
+const bz = P.verzug.basiszins[P.verzug.basiszins.length - 1];
+const nSrc = Object.keys(P.sources).length;
+const bsp = M.miete({ zugang: '2027-05-01', land: 'BE', wer: 'mieter' });
+---
+<PageLayout title={title} description={description} lang={lang} jsonLd={[webPageSchema({ name: h1, description, path, lang }), breadcrumbSchema([{ name: T('Startseite', 'Home'), path: route('home', lang) }, { name: h1, path }])]} breadcrumbs={[{ label: h1 }]} sources={sources}>
+  <header class="mb-6"><h1 class="text-3xl font-bold text-navy-900 md:text-4xl">{h1}</h1>
+    <p class="mt-3 text-lg text-navy-700">{T('Woher jede Frist, jeder Betrag und jeder Satz in den Vorlagen kommt, wie gerechnet wird und wo die Grenzen liegen.', 'Where every period, amount and sentence in the templates comes from, how they calculate and where their limits are.')}</p></header>
+  <div class="prose prose-slate max-w-none">
+    {lang === 'de' && <>
+      <p>Jede Vorlage besteht aus zwei Teilen: einem Rechner, der aus Ihren Daten ein Datum oder einen Betrag ermittelt, und einem Text, der dieses Ergebnis einsetzt. Alle Fristen, Grenzen und Beträge stehen in einer einzigen Datei (<code>params-2026.json</code>) mit der Adresse der amtlichen Quelle; gelesen haben wir sie am {date(P.retrieved_at)}. Die Datei verweist auf {nSrc} Quellen, fast alle Paragrafen auf gesetze-im-internet.de, dem Angebot des Bundesministeriums der Justiz.</p>
+      <h2>1. Die Gesetze</h2>
+      <p>Gelesen wurden unter anderem die §§ 126, 130, 187, 188, 193, 286, 288, 309, 312k, 433, 444, 516, 518, 535 bis 575 und 622, 623 BGB, Art. 229 § 60 EGBGB, § 56 TKG, § 11 VVG, § 20 StromGVV, §§ 1a und 4 KSchG, § 159 SGB III sowie §§ 14, 15, 16 und 30 ErbStG. Gesetze sind amtliche Werke ohne Urheberrecht (§ 5 UrhG); die Vorlagen geben keinen Gesetzestext wieder, sondern wenden ihn an. Für zwei Auslegungsfragen stützen wir uns auf den Bundesgerichtshof: Der Samstag zählt bei der Frist für Mietkündigungen als Werktag (<Fragment set:html={H.src('bghSamstag', 'VIII ZR 206/04')} />), und ein Vertragsgenerator, der Fragen stellt und daraus ein Dokument erzeugt, ist keine Rechtsdienstleistung (<Fragment set:html={H.src('bghVertragsgenerator', 'I ZR 113/20')} />).</p>
+      <h2>2. Die Fristberechnung</h2>
+      <p>Fristen beginnen am Tag nach dem Zugang (§ 187 Abs. 1 BGB) und enden mit dem Tag, der durch seine Zahl dem Zugangstag entspricht; fehlt dieser Tag im letzten Monat, endet die Frist am Monatsletzten (§ 188 Abs. 2 und 3 BGB). Wo das Gesetz einen festen Termin verlangt, etwa den 15. oder das Monatsende im Arbeitsrecht, nimmt der Rechner den ersten zulässigen Termin nach Ablauf der Frist. Die späteste Zugangszeit für ein bestimmtes Ende rechnet er vorsichtig: Im Zweifel nennt er den früheren Tag.</p>
+      <h2>3. Werktage und Feiertage</h2>
+      <p>Für den dritten Werktag im Mietrecht zählen Montag bis Samstag, ohne gesetzliche Feiertage. Die Feiertage stammen aus den Feiertagsgesetzen der 16 Länder; der Rechner kennt die landesweit geltenden Tage einschließlich Ostern, Pfingsten, Fronleichnam, Reformationstag, Allerheiligen und Buß- und Bettag in Sachsen. Tage, die nur in einzelnen Gemeinden gelten (etwa Mariä Himmelfahrt in Teilen Bayerns), sind nicht enthalten. Beispiel: Für einen Zugang am 1. Mai 2027 in Berlin liegt der dritte Werktag am {date(bsp.stichtag)}, das Mietende am {date(bsp.ende)}. Fällt der dritte Werktag auf einen Samstag, bleibt der Rechner bei diesem Samstag, weil der Bundesgerichtshof eine Verschiebung nach § 193 BGB offengelassen hat.</p>
+      <h2>4. Basiszinssatz und Beträge</h2>
+      <p>Verzugszinsen rechnet die Mahnung taggenau auf 365 Tage mit dem Basiszinssatz nach § 247 BGB, den die Deutsche Bundesbank zum 1. Januar und 1. Juli bekannt gibt. Der jüngste Satz in der Datei gilt ab {date(bz.ab)} und beträgt {num(bz.satz, 2)} Prozent. Die Abfindung im Aufhebungsvertrag folgt der Formel des § 1a KSchG, die Freibeträge der Schenkung § 16 ErbStG. Eine Steuer rechnen die Vorlagen nicht aus.</p>
+      <h2>5. Die Texte</h2>
+      <p>Die Vertrags- und Brieftexte sind eigene Formulierungen. Sie verzichten bewusst auf Klauseln, die Gerichte häufig für unwirksam halten, etwa starre Renovierungsfristen oder pauschale Tierverbote, und lassen dort das Gesetz gelten. Jeder Text nennt die Vorschrift, auf der eine Regel beruht. Fehlende Angaben erscheinen als Linie zum Ausfüllen von Hand.</p>
+      <h2>Grenzen</h2>
+      <p>Die Vorlagen decken den üblichen Fall ab. Sie prüfen keine Klauseln Ihres Vertrags, keine Tarifverträge und keine fristlose Kündigung aus wichtigem Grund. Testamente, Patientenverfügungen und Vorsorgevollmachten bieten wir nicht an. Ändert sich ein Gesetz oder der Basiszinssatz, passen wir die Datei von Hand an; bis dahin gilt der Stand vom {date(P.retrieved_at)}.</p>
+      <h2>Tests</h2>
+      <p>Jeder Build rechnet mehr als vierzig Fälle nach, darunter Mietfristen mit Feiertagen, die Staffel des § 622 BGB, alte und neue Verbraucherverträge, Versicherungsabläufe, Verzugszinsen über einen Zinswechsel und Beträge in Worten; zusätzlich wird jede Vorlage mit Standardwerten erzeugt und auf leere Stellen geprüft. Eine Abweichung verhindert die Veröffentlichung. Ein Fehler? <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
+    </>}
+    {lang === 'en' && <>
+      <p>Each template has two parts: a calculator that turns your details into a date or an amount, and a text that inserts that result. All periods, limits and amounts sit in a single file (<code>params-2026.json</code>) with the address of the official source; we read them on {date(P.retrieved_at)}. The file points to {nSrc} sources, nearly all of them sections on gesetze-im-internet.de, the Federal Ministry of Justice’s statute service.</p>
+      <h2>1. The statutes</h2>
+      <p>We read, among others, sections 126, 130, 187, 188, 193, 286, 288, 309, 312k, 433, 444, 516, 518, 535 to 575, 622 and 623 of the Civil Code (BGB), article 229 section 60 EGBGB, section 56 of the Telecommunications Act, section 11 of the Insurance Contract Act, section 20 of the default electricity supply ordinance, sections 1a and 4 of the Dismissal Protection Act, section 159 SGB III and sections 14, 15, 16 and 30 of the Inheritance and Gift Tax Act. Statutes are official works without copyright (section 5 of the Copyright Act); the templates do not reproduce them but apply them. On two points of interpretation we rely on the Federal Court of Justice: Saturday counts as a working day for tenancy notice (<Fragment set:html={H.src('bghSamstag', 'VIII ZR 206/04')} />), and a contract generator that asks questions and produces a document is not a legal service (<Fragment set:html={H.src('bghVertragsgenerator', 'I ZR 113/20')} />).</p>
+      <h2>2. Counting periods</h2>
+      <p>Periods start on the day after receipt (section 187(1) BGB) and end on the day whose number matches the day of receipt; if that day does not exist in the final month, the period ends on its last day (section 188(2) and (3) BGB). Where the law requires a fixed date, such as the 15th or month end in employment law, the calculator takes the first permitted date after the period has run. It counts the latest receipt date for a given end cautiously: when in doubt it names the earlier day.</p>
+      <h2>3. Working days and holidays</h2>
+      <p>For the third working day in tenancy law, Monday to Saturday count, excluding public holidays. The holidays come from the holiday acts of the 16 states; the calculator knows the statewide days, including Easter, Whitsun, Corpus Christi, Reformation Day, All Saints’ Day and Repentance Day in Saxony. Days observed only in some municipalities (such as Assumption Day in parts of Bavaria) are not included. Example: for receipt on 1 May 2027 in Berlin, the third working day is {date(bsp.stichtag)} and the tenancy ends on {date(bsp.ende)}. If the third working day is a Saturday, the calculator keeps that Saturday, because the Federal Court of Justice left open whether section 193 BGB moves it.</p>
+      <h2>4. Base rate and amounts</h2>
+      <p>The payment reminder counts default interest to the day on a 365-day basis, using the base rate under section 247 BGB published by the Deutsche Bundesbank on 1 January and 1 July. The latest rate in the file applies from {date(bz.ab)} and is {num(bz.satz, 2)} percent. Severance in the termination agreement follows the formula in section 1a of the Dismissal Protection Act, gift allowances section 16 of the Gift Tax Act. The templates do not calculate any tax.</p>
+      <h2>5. The texts</h2>
+      <p>The contract and letter texts are our own wording, in German. They deliberately leave out clauses German courts often strike down, such as rigid redecoration schedules or blanket pet bans, and let the statute apply instead. Each text names the provision a rule rests on. Missing details appear as a line to fill in by hand.</p>
+      <h2>Limits</h2>
+      <p>The templates cover the usual case. They do not check clauses in your contract, collective agreements or termination without notice for good cause. Wills, advance healthcare directives and lasting powers of attorney are not offered. When a statute or the base rate changes, we update the file by hand; until then the state of {date(P.retrieved_at)} applies.</p>
+      <h2>Tests</h2>
+      <p>Every build recalculates more than forty cases, including tenancy deadlines with holidays, the section 622 scale, old and new consumer contracts, insurance expiries, default interest across a rate change and amounts in words; every template is also generated with default values and checked for gaps. A mismatch stops publication. Found an error? <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
+    </>}
+  </div>
+</PageLayout>

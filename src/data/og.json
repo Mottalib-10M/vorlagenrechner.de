@@ -1,0 +1,20 @@
+{
+ "accent": "#2B3A55",
+ "symbol": "VR",
+ "variants": [
+  {
+   "file": "og-de.png",
+   "title": "Vorlagen zum Ausfüllen\nmit Kündigungsfrist",
+   "subtitle": "Mietvertrag · Untermiete · Kündigung · Aufhebungsvertrag · Vollmacht",
+   "badge": "Fristen nach BGB, gelesen am 13.11.2026",
+   "brand": "Vorlagenrechner"
+  },
+  {
+   "file": "og-en.png",
+   "title": "German templates to fill in\nwith notice-period dates",
+   "subtitle": "Lease · sublet · termination letters · termination agreement · power of attorney",
+   "badge": "German Civil Code deadlines, read 13 Nov 2026",
+   "brand": "Vorlagenrechner"
+  }
+ ]
+}

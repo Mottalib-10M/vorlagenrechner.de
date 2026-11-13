@@ -1,0 +1,40 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { AUTHOR_NAME, CONTACT_EMAIL, LAST_UPDATED, SITE_NAMES } from '../../data/site-config';
+import { route, type Locale } from '../../i18n/routes';
+import { helpers } from '../../lib/helpers';
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const H = helpers(lang); const T = H.T;
+const name = SITE_NAMES[lang];
+const crumb = T('Redaktionelle Grundsätze', 'Editorial policy');
+const description = T(
+  `Woher Fristen und Beträge auf ${name} kommen, wer für sie einsteht, wie gerechnet und geprüft wird, welche Vereinfachungen gelten und was bei einem Fehler geschieht.`,
+  `Where the periods and amounts on ${name} come from, who answers for them, how they are calculated and checked, which simplifications apply and what happens on an error.`);
+const mail = `mailto:${CONTACT_EMAIL}`;
+---
+<PageLayout title={`${crumb} – ${name}`} description={description} lang={lang} noindex={true} breadcrumbs={[{ label: crumb }]} showAuthor={false}>
+  <div class="prose prose-slate max-w-none">
+    {lang === 'de' && <>
+      <h1>Redaktionelle Grundsätze und Korrekturen</h1>
+      <p>Ein Tag zu spät, und eine Kündigung wirkt einen Monat später. Eine Frist nach altem Recht, und ein Vertrag läuft ein Jahr weiter. Hier steht, wie wir solche Fehler vermeiden.</p>
+      <h2>Verantwortung</h2><p>{AUTHOR_NAME} steht für jede Frist, jeden Betrag und jeden Satz der Vorlagen ein. Eine Abweichung melden Sie an <a href={mail}>{CONTACT_EMAIL}</a>; wir prüfen sie am Gesetzestext.</p>
+      <h2>Nur amtliche Quellen</h2><p>Regeln kommen aus dem Gesetzestext, der Basiszinssatz von der Bundesbank, Auslegungsfragen aus Urteilen des Bundesgerichtshofs. Nichts wird von einem Anbieter oder einer anderen Vorlagenseite übernommen.</p>
+      <h2>Vereinfachungen, immer genannt</h2><p>Gemeindliche Feiertage sind nicht eingerechnet, und späteste Zugangstage werden vorsichtig gerechnet. Beides steht bei den Ergebnissen und in der Methode.</p>
+      <h2>Prüfungen vor der Veröffentlichung</h2><p>Jeder Build rechnet die Fristen, Zinsen und Beträge gegen erwartete Werte nach und erzeugt jede Vorlage mit Standardwerten; eine Abweichung stoppt die Veröffentlichung.</p>
+      <h2>Änderungen</h2><p>Ändert sich eine Vorschrift oder der Basiszinssatz, passen wir die Werte von Hand an. Der Stand jeder Angabe steht in der Methode.</p>
+      <h2>Unabhängigkeit</h2><p>Keine geschäftliche Verbindung zu einem Vermieter, Arbeitgeber, Anbieter oder einer Kanzlei. Eine solche Verbindung würde im Text genannt.</p>
+    </>}
+    {lang === 'en' && <>
+      <h1>Editorial and corrections policy</h1>
+      <p>One day late, and a cancellation takes effect a month later. A period under the old rules, and a contract runs for another year. Here is how we avoid such mistakes.</p>
+      <h2>Responsibility</h2><p>{AUTHOR_NAME} answers for every period, amount and sentence in the templates. Report a discrepancy to <a href={mail}>{CONTACT_EMAIL}</a>; we check it against the statute.</p>
+      <h2>Official sources only</h2><p>Rules come from the statute text, the base rate from the Bundesbank, points of interpretation from rulings of the Federal Court of Justice. Nothing is copied from a provider or another template site.</p>
+      <h2>Simplifications, always stated</h2><p>Municipal holidays are not included, and latest receipt dates are counted cautiously. Both are stated with the results and on the method page.</p>
+      <h2>Checks before publication</h2><p>Every build recalculates periods, interest and amounts against expected values and generates every template with default values; a mismatch stops publication.</p>
+      <h2>Changes</h2><p>When a provision or the base rate changes, we update the values by hand. The date of each figure is on the method page.</p>
+      <h2>Independence</h2><p>No business link with any landlord, employer, provider or law firm. Any such link would be stated in the text.</p>
+    </>}
+    <p>{T('Siehe auch die', 'See also the')} <a href={route('method', lang)}>{T('Methode', 'method')}</a>. {T('Fassung:', 'Version:')} {H.date(LAST_UPDATED)}.</p>
+  </div>
+</PageLayout>

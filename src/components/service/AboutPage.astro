@@ -1,0 +1,52 @@
+---
+/** Über uns (Vertrauensseite, RECETTE §8) : wer veröffentlicht, warum, woher die Angaben kommen. */
+import PageLayout from '../../layouts/PageLayout.astro';
+import { AUTHOR_NAME, CONTACT_EMAIL, AUTHOR_ROLE, SITE_NAMES } from '../../data/site-config';
+import { route, type Locale } from '../../i18n/routes';
+import { personSchema, organizationSchema, breadcrumbSchema, profilePageSchema } from '../../lib/seo';
+import { helpers } from '../../lib/helpers';
+import { PAGES } from '../../lib/guides';
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const H = helpers(lang); const T = H.T;
+const crumb = T('Über uns', 'About');
+const name = SITE_NAMES[lang];
+const title = T(`${name}: wer die Vorlagen und Fristenrechner macht`, `${name}: who makes these templates and calculators`);
+const description = T(
+  `Wer ${name} herausgibt, warum Vorlagen mit berechnetem Datum nötig waren, woher Fristen und Beträge kommen und wie Sie einen Fehler melden können.`,
+  `Who publishes ${name}, why templates with a calculated date were needed, where the periods and amounts come from and how to report an error to us.`);
+const mail = `mailto:${CONTACT_EMAIL}`;
+const n = PAGES.length + 1;
+---
+<PageLayout title={title} description={description} lang={lang} jsonLd={[personSchema(lang), organizationSchema(lang), profilePageSchema({ path: route('about', lang), lang }), breadcrumbSchema([{ name: T('Startseite', 'Home'), path: route('home', lang) }, { name: crumb, path: route('about', lang) }])]} breadcrumbs={[{ label: crumb }]}>
+  <header class="mb-6"><h1 class="text-3xl font-bold text-navy-900 md:text-4xl">{T(`Über ${name}`, `About ${name}`)}</h1></header>
+  <div class="prose prose-slate max-w-none">
+    <div class="not-prose mb-6"><p class="text-lg font-semibold text-navy-900">{AUTHOR_NAME}</p><p class="text-navy-700">{AUTHOR_ROLE[lang]}</p></div>
+    {lang === 'de' && <>
+      <p>{name} wird von Radif Partners herausgegeben, einem unabhängigen Herausgeber ohne Verbindung zu einer Behörde, einer Kanzlei oder einem Anbieter. Die Seite bietet {n} Vorlagen für Kündigungen, Mietverträge, Arbeit und Alltag, jede mit einem Rechner.</p>
+      <h2>Warum es diese Seite gibt</h2>
+      <p>Wer eine Kündigungsvorlage sucht, findet meist ein Muster mit der Lücke „zum ___“. Das Datum, auf das es ankommt, muss man selbst ausrechnen, und genau dabei passieren die Fehler: ein verpasster dritter Werktag, eine Frist nach altem Recht, eine Verlängerung um ein Jahr, die es seit 2022 nicht mehr gibt.</p>
+      <p><strong>{name} rechnet zuerst das Datum oder den Betrag aus, nach der jeweiligen Vorschrift, und setzt das Ergebnis dann in den Text ein. Jede Regel nennt ihren Paragrafen.</strong></p>
+      <h2>Woher die Angaben kommen</h2>
+      <p>Fristen und Formen aus den Gesetzestexten auf gesetze-im-internet.de, der Basiszinssatz von der Deutschen Bundesbank, die Feiertage aus den Feiertagsgesetzen der Länder. Einzelheiten stehen in der <a href={route('method', lang)}>Methode</a>.</p>
+      <h2>Was wir nicht sind</h2>
+      <p>Radif Partners ist keine Kanzlei und erbringt keine Rechtsberatung. Die Vorlagen decken den üblichen Fall ab; bei Streit, besonderen Vereinbarungen oder Tarifverträgen helfen Verbraucherzentralen, Mietervereine, Gewerkschaften oder Anwälte.</p>
+      <h2>Finanzierung und Daten</h2><p>Die Seite ist kostenlos und ohne Anmeldung. Rechner und Schreiben entstehen in Ihrem Browser; Namen, Adressen und Nummern werden nicht gesendet. Falls hier eines Tages Werbung erscheint, steht sie nie über einer Vorlage und nie als Empfehlung.</p>
+      <h2>Zwei Sprachen</h2><p>Die Seite gibt es auf Deutsch und Englisch. Die Dokumente selbst sind immer auf Deutsch, weil Vermieter, Arbeitgeber und Anbieter in Deutschland sie so erwarten.</p>
+      <h2>Schreiben Sie uns</h2><p>Eine geänderte Vorschrift, ein Fehler im Datum, ein unklarer Satz: <a href={mail}>{CONTACT_EMAIL}</a>. Siehe auch die <a href={route('editorial', lang)}>redaktionellen Grundsätze</a> und das <a href={route('terms', lang)}>Impressum</a>.</p>
+    </>}
+    {lang === 'en' && <>
+      <p>{name} is published by Radif Partners, an independent publisher with no link to any authority, law firm or provider. The site offers {n} German templates for cancellations, leases, work and daily life, each with a calculator.</p>
+      <h2>Why this site exists</h2>
+      <p>Search for a German cancellation template and you usually get a form with a gap saying “effective ___”. You have to work out the date that matters yourself, and that is where mistakes happen: a missed third working day, a period under old rules, a one-year renewal that no longer exists since 2022.</p>
+      <p><strong>{name} first calculates the date or amount under the relevant provision, then inserts the result into the text. Every rule names its section.</strong></p>
+      <h2>Where the information comes from</h2>
+      <p>Periods and forms from the statute texts on gesetze-im-internet.de, the base rate from the Deutsche Bundesbank, holidays from the states’ holiday acts. Details are on the <a href={route('method', lang)}>method</a> page.</p>
+      <h2>What we are not</h2>
+      <p>Radif Partners is not a law firm and gives no legal advice. The templates cover the usual case; for disputes, special agreements or collective agreements, consumer advice centres, tenants’ associations, trade unions or lawyers can help.</p>
+      <h2>Funding and data</h2><p>The site is free and needs no sign-up. Calculations and letters are produced in your browser; names, addresses and numbers are not sent anywhere. If advertising ever appears here, it will never sit above a template or be presented as a recommendation.</p>
+      <h2>Two languages</h2><p>The site is in German and English. The documents themselves are always in German, because landlords, employers and providers in Germany expect them that way.</p>
+      <h2>Write to us</h2><p>A changed provision, a wrong date, an unclear sentence: <a href={mail}>{CONTACT_EMAIL}</a>. See also the <a href={route('editorial', lang)}>editorial policy</a> and the <a href={route('terms', lang)}>legal notice</a>.</p>
+    </>}
+  </div>
+</PageLayout>
