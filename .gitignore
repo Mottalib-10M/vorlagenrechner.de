@@ -3,3 +3,5 @@ dist/
 .astro/
 .DS_Store
 scripts/__pycache__/
+__pycache__/
+logs/
