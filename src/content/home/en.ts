@@ -22,7 +22,7 @@ export const en = {
   ],
   body: (h: Helpers) => `<h2>How the German cancellation letter template calculates</h2>
 <p>You enter three facts: when the contract began, how long the minimum term is and what notice period the contract states. Then the day your cancellation is likely to arrive. From that the template works out the end of the minimum term, the latest receipt date for it and the actual end of the contract. If a notice period is longer than the law allows, it uses the statutory limit and tells you. The letter takes the calculated date and adds “or alternatively on the next possible date”, so that the cancellation still works if your details are slightly off.</p>
-${h.table(['Cancellation arrives', 'Contract from Jan 2025 (24 months, 1 month)', 'Older contract from Jan 2021 (24 months, 3 months)'], ['2026-10-01', '2026-12-15', '2027-02-10', '2027-09-30'].map((z) => [h.date(z), h.date(abo(h, z).ende), h.date(alt(h, z).ende)]), 'Worked examples under section 309 no. 9 BGB and article 229 section 60 EGBGB', ['l', 'l', 'l'])}
+${h.table(['Cancellation arrives', 'Contract from Jan 2025 (24 months, 1 month)', 'Older contract from Jan 2021 (24 months, 3 months)'], ['2026-10-01', '2026-12-15', '2027-02-10', '2027-09-30'].map((z) => [h.date(z), h.date(abo(h, z).ende), h.date(alt(h, z).ende)]), 'Worked examples', ['l', 'l', 'l'])}
 <h2>Which notice period applies to which contract</h2>
 <p>The period depends on the contract, and each has its own provision. The table sums up the rules the templates on this site use. Where a contract contains its own valid period, that one takes precedence.</p>
 ${h.table(['Contract', 'Statutory rule', 'Form'], [

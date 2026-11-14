@@ -27,7 +27,7 @@ export default defineGuide({
     ],
     body: (h) => `<h2>Kündigung Fitnessstudio: neues und altes Recht</h2>
 <p>Maßgeblich ist der Tag des Vertragsschlusses. Der Rechner nimmt dafür den Beginn der Mitgliedschaft; liegen Unterschrift und Beginn weit auseinander, tragen Sie den Tag der Unterschrift als Beginn ein.</p>
-${h.table(['Kündigung kommt an', 'Vertrag ab April 2025 (12 Monate, 1 Monat Frist)', 'Altvertrag ab April 2021 (24 Monate, 3 Monate Frist)'], ['2026-02-15', '2026-06-20', '2027-02-10'].map((z) => [h.date(z), h.date(neu(h, z).ende), h.date(alt(h, z).ende)]), 'Rechenbeispiele', ['l', 'l', 'l'])}
+${h.table(['Kündigung kommt an', 'Vertrag ab April 2025 (12 Monate, 1 Monat Frist)', 'Alter Vertrag, vor März 2022: ab April 2021 (24 Monate, 3 Monate Frist)'], ['2026-02-15', '2026-06-20', '2027-02-10'].map((z) => [h.date(z), h.date(neu(h, z).ende), h.date(alt(h, z).ende)]), 'Rechenbeispiele', ['l', 'l', 'l'])}
 <h2>Ruhezeiten, Gebühren und Lastschrift</h2>
 <p>Ein vereinbartes Ruhen der Mitgliedschaft, etwa während einer Schwangerschaft, verlängert die Laufzeit nur, wenn der Vertrag das ausdrücklich so regelt. Eine Gebühr für die Kündigung ist nicht vorgesehen. Das Schreiben widerruft das Lastschriftmandat zum Vertragsende; bucht das Studio danach noch ab, können Sie die Lastschrift bei Ihrer Bank zurückgeben. Fordert ein Studio trotz wirksamer Kündigung weiter Beiträge, hilft eine schriftliche Antwort mit dem errechneten Ende; ähnlich funktioniert der ${h.a('handyvertrag', 'Handyvertrag')}.</p>`,
   },

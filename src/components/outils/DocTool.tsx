@@ -18,6 +18,14 @@ const T = <A,>(l: L, de: A, en: A) => (l === 'en' ? en : de);
 const defaults = (fields: FieldDef[], today: string, preset: V = {}): V =>
   Object.fromEntries(fields.map((f) => [f.id, preset[f.id] ?? (typeof f.def === 'function' ? f.def(today) : f.def)]));
 
+/** Gesetzesangaben « (§ 309 Nr. 9 BGB) » aus einem Satz lösen : der Satz bleibt lesbar, die Vorschrift steht darunter als Grundlage
+ *  (testeurs naïfs du 2026-11-14 : Vorschriften in die Fußnote, nicht in den Satz). */
+const REF = /\s*\(((?:§§?|Art\.|ss?\.|sections?)\s(?:[^()]|\([^()]*\))*)\)/g;
+export function ohneVorschrift(s: string | undefined, refs: string[]): string | undefined {
+  if (!s) return s;
+  return s.replace(REF, (_, r: string) => { if (!refs.includes(r)) refs.push(r); return ''; });
+}
+
 function docText(d: DocOut): string {
   const out: string[] = [];
   if (d.from?.length) out.push(d.from.join('\n'), '');
@@ -37,7 +45,13 @@ export default function DocTool({ docId, lang, refDay, id, methodHref, preset, r
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [copied, setCopied] = useState(false);
   const set = (k: string) => (x: string) => { setV((o) => ({ ...o, [k]: x })); setTouched((o) => ({ ...o, [k]: true })); };
-  const r = useMemo(() => spec.result(v, lang), [v, lang, spec]);
+  const roh = useMemo(() => spec.result(v, lang), [v, lang, spec]);
+  const { r, refs } = useMemo(() => {
+    const refs: string[] = [];
+    const r = { ...roh, sub: ohneVorschrift(roh.sub, refs), alert: ohneVorschrift(roh.alert, refs), hinweis: ohneVorschrift(roh.hinweis, refs), rows: roh.rows?.map(([a, b]) => [ohneVorschrift(a, refs)!, ohneVorschrift(b, refs)!] as [string, string]) };
+    return { r, refs };
+  }, [roh]);
+  const exemple = typeof spec.exemple === 'function' ? spec.exemple(refDay) : spec.exemple;
   const doc = useMemo(() => (spec.doc ? spec.doc(v) : null), [v, spec]);
   const visible = spec.fields.filter((f) => !f.showIf || f.showIf(v));
 
@@ -46,10 +60,23 @@ export default function DocTool({ docId, lang, refDay, id, methodHref, preset, r
     if (f.group || !groups.length) groups.push({ title: f.group?.[lang], fields: [] });
     groups[groups.length - 1].fields.push(f);
   }
+  // Aide d'un champ de gauche dont le voisin de droite n'a pas d'aide : elle s'étend sur toute la rangée (check-layout n° 10).
+  // Le champ date a toujours une aide (format et date en toutes lettres).
+  const aAide = (f?: FieldDef) => !!f && (f.kind === 'date' || !!f.help);
+  const large = new Set<string>();
+  for (const g of groups) {
+    let col = 0;
+    g.fields.forEach((f, i) => {
+      if (f.wide) { col = 0; return; }
+      const next = g.fields[i + 1];
+      if (col === 0 && aAide(f) && (!next || next.wide || !aAide(next))) large.add(f.id);
+      col = col === 0 && !(next?.wide) ? 1 : 0;
+    });
+  }
   const field = (f: FieldDef) => {
-    const fid = `${id}-${f.id}`, label = f.label[lang], help = f.help?.[lang], cls = f.wide ? 'sm:col-span-2' : '';
+    const fid = `${id}-${f.id}`, label = f.label[lang], help = f.help?.[lang], cls = f.wide ? 'sm:col-span-2' : large.has(f.id) ? 'aide-large' : '';
     if (f.kind === 'select') return <SelectField key={f.id} id={fid} label={label} help={help} value={v[f.id]} onChange={set(f.id)} options={(f.options ?? []).map((o) => ({ value: o.value, label: o.label[lang] }))} className={cls} />;
-    if (f.kind === 'date') return <DateField key={f.id} id={fid} label={label} help={help} value={v[f.id]} onChange={set(f.id)} className={cls} />;
+    if (f.kind === 'date') return <DateField key={f.id} id={fid} label={label} help={help} value={v[f.id]} onChange={set(f.id)} className={cls} lang={lang} />;
     if (f.kind === 'number') return <NumberField key={f.id} id={fid} label={label} help={help} value={Number(v[f.id]) || 0} onChange={(n) => set(f.id)(String(n))} unit={f.unit} min={f.min ?? 0} max={f.max} decimals={f.decimals ?? 0} className={cls} />;
     return <TextField key={f.id} id={fid} label={label} help={help} value={v[f.id]} onChange={set(f.id)} className={cls} />;
   };
@@ -66,10 +93,12 @@ export default function DocTool({ docId, lang, refDay, id, methodHref, preset, r
   );
   const result = (
     <>
-      <MentionExemple lang={lang} touched={touched} suppose={spec.exemple[lang]} modifiables={spec.fields.length} />
+      <MentionExemple lang={lang} touched={touched} suppose={exemple[lang]} modifiables={spec.fields.length} />
       <Head label={r.label} value={r.value} sub={r.sub} />
       {r.alert && <p className="mt-3 rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900">{r.alert}</p>}
       {r.rows && <Rows rows={r.rows} />}
+      {r.hinweis && <p className="mt-3 text-sm text-navy-700">{r.hinweis}</p>}
+      {refs.length > 0 && <p className="mt-2 text-xs text-navy-500">{T(lang, 'Grundlage', 'Legal basis')}: {refs.join('; ')}</p>}
       {doc && <p className="mt-4 text-sm"><a href={`#${id}-dokument`} className="font-medium text-accent-700 underline">{T(lang, 'Zum fertigen Dokument', 'Go to the finished document')}</a></p>}
       <Note>{T(lang, 'Vorlage wie aus einem Formularhandbuch: keine Prüfung Ihres Einzelfalls, keine Rechtsberatung. Eingaben bleiben in Ihrem Browser.', 'A standard template, like a book of legal forms: no review of your individual case and no legal advice. What you type stays in your browser.')}</Note>
       <MethodLink href={methodHref} lang={lang} />

@@ -1,13 +1,14 @@
-name: deploy
+name: Daily rebuild and deploy
 
-# Publie le site sur GitHub Pages à chaque push sur main, et après chaque passe de update-data
-# (un push fait avec GITHUB_TOKEN ne relance pas les workflows, d'où workflow_run).
+# Jeden Tag um 0 Uhr 10 UTC (der Tag des Builds ist das UTC-Datum, astro.config.mjs) : die Rechner starten mit diesem Tag (Datumsfelder,
+# Fristen ab heute), daher wird die Seite täglich neu gebaut und veröffentlicht. Keine Quelle wird hier gelesen.
+# Ce workflow est le seul qui publie le site : push sur main, tâche planifiée et lancement manuel.
+# Modèle : canadaprocessingtimes.com/.github/workflows/update-data.yml (RECETTE, sites à données datées).
 on:
+  schedule:
+    - cron: "10 0 * * *"
   push:
     branches: [main]
-  workflow_run:
-    workflows: [update-data]
-    types: [completed]
   workflow_dispatch:
 
 permissions:
@@ -21,18 +22,27 @@ concurrency:
 
 jobs:
   build:
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-      - run: npm ci --legacy-peer-deps
-      - run: npm run build
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Tests
+        run: npx vitest run
+
+      - name: Build
+        run: npm run build
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
@@ -47,7 +57,9 @@ jobs:
       - id: deployment
         uses: actions/deploy-pages@v4
       - name: Checkout (script IndexNow)
+        if: github.event_name != 'schedule'
         uses: actions/checkout@v4
       - name: Ping IndexNow
+        if: github.event_name != 'schedule'
         continue-on-error: true
         run: bash scripts/indexnow.sh https://vorlagenrechner.de

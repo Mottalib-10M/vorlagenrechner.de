@@ -35,6 +35,8 @@ const texte = (c: Cellule) => String(c).replace(/<[^>]+>/g, '').replace(/\s+/g, 
 /** Une valeur seule, sans mot : « 3 », « #1 », « 12,5 % », « $1,200 », « 1–3 ». */
 export const NOMBRE_SEUL = /^[#№=]?[\d\s.,%€$£¥+\-–−]+$/;
 /** En-tête d'une colonne de rang. */
+/** Une date seule : « 1. Oktober 2026 », « 1 October 2026 », « 01.10.2026 » (vorlagenrechner.de, 2026-11-14). */
+export const DATE_SEULE = /^\d{1,2}(?:\.\s?|\s)(?:\d{1,2}\.\s?|[A-Za-zÀ-ÿ]+\.?\s)\d{4}$/;
 export const EN_TETE_RANG = /^(#|n[°º.]?|no\.?|nr\.?|rank|ranking|rang|classement|rango|platz|position|posizione|posição|pos\.?|lp\.?|sıra)$/i;
 
 /**
@@ -52,7 +54,10 @@ export function ficheTitre(headers: Cellule[], rows: Cellule[][]): { titre: 0 | 
   const rang = EN_TETE_RANG.test(h0) || (h0 === '' && col0Nombres);
   const col1Texte = lignes.some((r) => { const t = texte(r[1] ?? ''); return t !== '' && !NOMBRE_SEUL.test(t); });
   if (rang && col1Texte && headers.length >= 2) return { titre: 1, nommer: false };
-  return { titre: 0, nommer: col0Nombres && h0 !== '' && !EN_TETE_RANG.test(h0) };
+  // Une 1re colonne de dates nommée (« Kündigung kommt an ») garde aussi son nom devant le titre : seule, la date en gras
+  // ne disait pas ce qu'elle était (testeurs naïfs du 2026-11-14, vorlagenrechner.de).
+  const col0Dates = lignes.every((r) => DATE_SEULE.test(texte(r[0] ?? '')));
+  return { titre: 0, nommer: (col0Nombres || col0Dates) && h0 !== '' && !EN_TETE_RANG.test(h0) };
 }
 
 /**
@@ -101,11 +106,11 @@ export function tableHtml(headers: string[], rows: Cellule[][], o: OptionsTablea
 export const SCRIPT_TABLEAUX = `(function(){var L=768;
 function nc(t){var m=0;for(var i=0;i<t.rows.length;i++)m=Math.max(m,t.rows[i].cells.length);return m}
 function ent(t){var h=t.tHead&&t.tHead.rows[t.tHead.rows.length-1];if(!h)return null;var e=[];for(var i=0;i<h.cells.length;i++){var c=h.cells[i];for(var k=0;k<(c.colSpan||1);k++)e.push((c.textContent||'').replace(/\\s+/g,' ').trim())}return e}
-var NB=/^[#\u2116=]?[\\d\\s.,%\u20ac$\u00a3\u00a5+\\-\u2013\u2212]+$/,RG=/^(#|n[\u00b0\u00ba.]?|no\\.?|nr\\.?|rank|ranking|rang|classement|rango|platz|position|posizione|posi\u00e7\u00e3o|pos\\.?|lp\\.?|s\u0131ra)$/i;
+var DT=/^\\d{1,2}(?:\\.\\s?|\\s)(?:\\d{1,2}\\.\\s?|[A-Za-z\u00c0-\u00ff]+\\.?\\s)\\d{4}$/,NB=/^[#\u2116=]?[\\d\\s.,%\u20ac$\u00a3\u00a5+\\-\u2013\u2212]+$/,RG=/^(#|n[\u00b0\u00ba.]?|no\\.?|nr\\.?|rank|ranking|rang|classement|rango|platz|position|posizione|posi\u00e7\u00e3o|pos\\.?|lp\\.?|s\u0131ra)$/i;
 function tx(c){return c?(c.textContent||'').replace(/\\s+/g,' ').trim():''}
 function lig(t){var l=[];for(var j=0;j<t.tBodies.length;j++)for(var i=0;i<t.tBodies[j].rows.length;i++)if(t.tBodies[j].rows[i].cells.length)l.push(t.tBodies[j].rows[i]);return l}
-function fic(t,e){var l=lig(t),c0=l.length>0,c1=false;for(var i=0;i<l.length;i++){if(!NB.test(tx(l[i].cells[0])))c0=false;var s=tx(l[i].cells[1]);if(s&&!NB.test(s))c1=true}
-var h=e[0]||'',rg=RG.test(h)||(!h&&c0);if(l.length&&rg&&c1&&e.length>=2)return{t:1,n:false};return{t:0,n:c0&&!!h&&!RG.test(h)}}
+function fic(t,e){var l=lig(t),c0=l.length>0,cd=l.length>0,c1=false;for(var i=0;i<l.length;i++){if(!NB.test(tx(l[i].cells[0])))c0=false;if(!DT.test(tx(l[i].cells[0])))cd=false;var s=tx(l[i].cells[1]);if(s&&!NB.test(s))c1=true}
+var h=e[0]||'',rg=RG.test(h)||(!h&&c0);if(l.length&&rg&&c1&&e.length>=2)return{t:1,n:false};return{t:0,n:(c0||cd)&&!!h&&!RG.test(h)}}
 function eti(t){var e=ent(t);if(!e)return false;var f=fic(t,e);if(f.t)t.setAttribute('data-titre','2');for(var j=0;j<t.tBodies.length;j++)for(var i=0;i<t.tBodies[j].rows.length;i++){var r=t.tBodies[j].rows[i],x=0;for(var k=0;k<r.cells.length;k++){var c=r.cells[k];if(!c.hasAttribute('data-label'))c.setAttribute('data-label',x===f.t&&!f.n?'':(e[x]||''));x+=c.colSpan||1}}return true}
 function env(t){for(var j=0;j<t.tBodies.length;j++)for(var i=0;i<t.tBodies[j].rows.length;i++){var r=t.tBodies[j].rows[i];for(var k=0;k<r.cells.length;k++){var c=r.cells[k];if(c.childNodes&&c.childNodes.length>1){var s=document.createElement('span');while(c.firstChild)s.appendChild(c.firstChild);c.appendChild(s)}}}}
 function deb(b){return b.scrollWidth-b.clientWidth>4}

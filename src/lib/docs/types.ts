@@ -28,6 +28,8 @@ export interface Result {
   label: string; value: string; sub?: string;
   rows?: Array<[string, string]>;
   alert?: string;
+  /** neutraler Hinweis (kein Warnkasten) */
+  hinweis?: string;
 }
 export interface DocBlock { h?: string; p: string[] }
 export interface DocOut {
@@ -46,7 +48,8 @@ export interface DocSpec {
   fields: FieldDef[];
   result: (v: V, l: L) => Result;
   doc?: (v: V) => DocOut;
-  /** Was das Beispiel annimmt (Hinweis « Beispiel », solange nichts geändert ist). */
-  exemple: Txt;
+  /** Was das Beispiel annimmt (Hinweis « Beispiel », solange nichts geändert ist) ; eine Funktion bekommt den Tag des Builds,
+   *  wenn die Vorgaben davon abhängen (Vertragsbeginn so gewählt, dass die Frist noch bevorsteht). */
+  exemple: Txt | ((today: string) => Txt);
 }
 export const T = <A,>(l: L, de: A, en: A) => (l === 'en' ? en : de);

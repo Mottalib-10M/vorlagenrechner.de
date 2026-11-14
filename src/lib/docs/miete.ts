@@ -97,9 +97,9 @@ export const untermiete: DocSpec = {
       label: T(l, 'Mietende bei Kündigung an diesem Tag', 'End of the sublet if notice arrives that day'), value: dL(r.ende, l),
       sub: moebl ? T(l, 'Zugang bis zum 15. → Ende desselben Monats (§ 573c Abs. 3 BGB)', 'Received by the 15th → end of that month (s. 573c(3) BGB)') : T(l, 'drei Monate, Zugang bis zum 3. Werktag (§ 573c Abs. 1 BGB)', 'three months, received by the 3rd working day (s. 573c(1) BGB)'),
       rows: [
-        [T(l, 'Stichtag in diesem Monat', 'Deadline this month'), dL(r.stichtag, l)],
-        [T(l, 'Danach: Stichtag', 'After that: deadline'), dL(r.stichtagNaechster, l)],
-        [T(l, '… und Ende', '… and end'), dL(r.endeNaechster, l)],
+        [T(l, 'Muss in diesem Monat spätestens ankommen am', 'Must arrive this month by'), r.rechtzeitig ? dL(r.stichtag, l) : T(l, `${dL(r.stichtag, l)}, verpasst: nächster möglicher Termin ${dL(r.ende, l)}`, `${dL(r.stichtag, l)}, missed: next possible date ${dL(r.ende, l)}`)],
+        [T(l, 'Im nächsten Monat: muss ankommen bis', 'Next month: must arrive by'), dL(r.stichtagNaechster, l)],
+        [T(l, 'Mietende, wenn es bis dahin ankommt', 'End of the sublet if it arrives by then'), dL(r.endeNaechster, l)],
         [T(l, 'Kaution, höchstens', 'Deposit, at most'), eurL(3 * num(v, 'miete'), l)],
       ],
       alert: v.erlaubnis === 'beantragt' ? T(l, 'Ohne Erlaubnis des Vermieters darf der Hauptmieter nicht untervermieten (§ 540 BGB).', 'Without the landlord’s permission the main tenant may not sublet (s. 540 BGB).') : undefined,
@@ -188,28 +188,26 @@ export const kuendigungMiete: DocSpec = {
   id: 'kuendigungMiete',
   exemple: t('Beispiel: Kündigung geht heute zu, Berlin', 'Example: notice arrives today, Berlin'),
   fields: [
-    { id: 'zugang', kind: 'date', label: t('Tag, an dem der Vermieter das Schreiben erhält', 'Day the landlord receives the letter'), def: (d) => d, group: t('Frist', 'Deadline') },
+    { id: 'zugang', kind: 'date', label: t('Tag, an dem der Vermieter das Schreiben erhält', 'Day the landlord receives the letter'), def: (d) => d, group: t('Frist', 'Deadline'), help: t('der Tag, an dem der Brief ankommt, nicht der Tag des Absendens', 'the day the letter arrives, not the day you post it') },
     landFeld(),
     { id: 'art', kind: 'select', label: t('Art der Wohnung', 'Type of home'), def: 'wohnung', options: [{ value: 'wohnung', label: t('Wohnung oder Haus', 'Flat or house') }, { value: 'moebliert', label: t('möbliertes Zimmer beim Vermieter', 'furnished room in the landlord’s home') }] },
     ...partei('mt', 'des Mieters', 'the tenant', t('Mieter', 'Tenant')),
     { id: 'mt2', kind: 'text', label: t('Weitere Mieterin / weiterer Mieter', 'Second tenant'), def: '', personal: true, help: t('alle Mieter im Vertrag müssen unterschreiben', 'every tenant on the lease must sign') },
     ...partei('vm', 'des Vermieters', 'the landlord', t('Vermieter', 'Landlord')),
     { id: 'objekt', kind: 'text', label: t('Wohnung (Adresse, Lage)', 'Flat (address, position)'), def: '', personal: true, wide: true, group: t('Wohnung und Kaution', 'Flat and deposit') },
-    { id: 'iban', kind: 'text', label: t('Ihre IBAN für die Kaution', 'Your IBAN for the deposit'), def: '', personal: true },
+    { id: 'iban', kind: 'text', label: t('Ihre IBAN für die Kaution', 'Your IBAN for the deposit'), def: '', personal: true, help: t('freiwillig: steht nur in Ihrem Brief an den Vermieter, wird nicht an uns gesendet', 'optional: appears only in your letter to the landlord, never sent to us') },
     { id: 'termin', kind: 'text', label: t('Vorschlag für die Übergabe', 'Proposed handover date'), def: '' },
     ...ortDatumFelder(),
   ],
   result: (v, l) => {
     const r = M.miete({ zugang: iso(v, 'zugang', '2026-11-13'), land: land(v), wer: 'mieter', moebliert: v.art === 'moebliert' });
-    const vm = M.miete({ zugang: iso(v, 'zugang', '2026-11-13'), land: land(v), wer: 'vermieter', ueberlassung: '2015-01-01' });
     return {
       label: T(l, 'Das Mietverhältnis endet am', 'The tenancy ends on'), value: dL(r.ende, l),
-      sub: r.rechtzeitig ? T(l, `Zugang bis ${dL(r.stichtag, l)} reicht dafür`, `receipt by ${dL(r.stichtag, l)} is enough`) : T(l, `Stichtag ${dL(r.stichtag, l)} verpasst: ein Monat später`, `deadline ${dL(r.stichtag, l)} missed: one month later`),
+      sub: r.rechtzeitig ? T(l, `wenn der Brief bis ${dL(r.stichtag, l)} ankommt`, `if the letter arrives by ${dL(r.stichtag, l)}`) : T(l, `Brief kommt nach dem ${dL(r.stichtag, l)} an (verpasst): das Ende verschiebt sich um einen Monat`, `letter arrives after ${dL(r.stichtag, l)} (missed): the end moves one month later`),
       rows: [
-        [T(l, 'Stichtag in diesem Monat', 'Deadline this month'), dL(r.stichtag, l)],
-        [T(l, 'Nächster Stichtag', 'Next deadline'), dL(r.stichtagNaechster, l)],
-        [T(l, '… Ende bei Zugang bis dahin', '… end if received by then'), dL(r.endeNaechster, l)],
-        ...(v.art === 'moebliert' ? [] : [[T(l, 'Zum Vergleich: Frist des Vermieters nach 8 Jahren', 'For comparison: landlord’s period after 8 years'), `${vm.monate} ${T(l, 'Monate', 'months')}`] as [string, string]]),
+        [T(l, 'Muss in diesem Monat spätestens ankommen am', 'Must arrive this month by'), r.rechtzeitig ? dL(r.stichtag, l) : T(l, `${dL(r.stichtag, l)}, verpasst: nächster möglicher Termin ${dL(r.ende, l)}`, `${dL(r.stichtag, l)}, missed: next possible date ${dL(r.ende, l)}`)],
+        [T(l, 'Im nächsten Monat: muss ankommen bis', 'Next month: must arrive by'), dL(r.stichtagNaechster, l)],
+        [T(l, 'Mietende, wenn der Brief bis dahin ankommt', 'End of tenancy if the letter arrives by then'), dL(r.endeNaechster, l)],
       ],
     };
   },

@@ -115,15 +115,18 @@ export const aufhebung: DocSpec = {
     const ref = M.abfindung1a(num(v, 'gehalt'), iso(v, 'beginn', '2020-01-01'), ende);
     const zuFrueh = ende < frist.ende;
     return {
-      label: T(l, 'Abfindung nach der Faustformel', 'Severance under the rule of thumb'), value: eurL(ref.betrag, l),
-      sub: T(l, `0,5 Monatsgehälter × ${ref.jahre} Jahre (§ 1a KSchG)`, `0.5 months’ pay × ${ref.jahre} years (s. 1a KSchG)`),
+      label: T(l, 'Übliche Abfindung, grob geschätzt', 'Usual severance, rough estimate'), value: eurL(ref.betrag, l),
+      sub: T(l, `Richtwert, kein Anspruch: ein halbes Monatsgehalt je Jahr, × ${ref.jahre} Jahre (§ 1a KSchG)`, `a guide, not an entitlement: half a month’s pay per year, × ${ref.jahre} years (s. 1a KSchG)`),
       rows: [
-        [T(l, 'Vereinbart', 'Agreed'), eurL(num(v, 'abfindung'), l)],
+        [T(l, 'Im Vertrag vereinbart', 'Agreed in the contract'), eurL(num(v, 'abfindung'), l)],
         [T(l, 'Ende bei Kündigung durch den Arbeitgeber', 'End if the employer gave notice'), dL(frist.ende, l)],
         [T(l, 'Vereinbartes Ende', 'Agreed end'), dL(ende, l)],
-        [T(l, 'Mögliche Sperrzeit beim Arbeitslosengeld', 'Possible benefit suspension'), T(l, 'bis 12 Wochen', 'up to 12 weeks')],
+        [T(l, 'Kündigungsfrist eingehalten?', 'Notice period respected?'), zuFrueh ? T(l, 'nein, Ende zu früh', 'no, end too early') : T(l, 'ja', 'yes')],
       ],
-      alert: zuFrueh ? T(l, `Das vereinbarte Ende liegt vor dem Ende der Kündigungsfrist (${dL(frist.ende, l)}). Die Agentur für Arbeit prüft dann besonders, ob eine Sperrzeit eintritt (§ 159 SGB III).`, `The agreed end is before the employer’s notice period would end (${dL(frist.ende, l)}). The employment agency then looks closely at a benefit suspension (s. 159 SGB III).`) : undefined,
+      alert: zuFrueh
+        ? T(l, `Das vereinbarte Ende liegt vor dem Ende der Kündigungsfrist (${dL(frist.ende, l)}). Die Agentur für Arbeit kann das Arbeitslosengeld dann eher für bis zu 12 Wochen sperren (§ 159 SGB III).`, `The agreed end is before the employer’s notice period would end (${dL(frist.ende, l)}). The employment agency is then more likely to suspend unemployment benefit for up to 12 weeks (s. 159 SGB III).`)
+        : undefined,
+      hinweis: zuFrueh ? undefined : T(l, 'Arbeitslosengeld: Nach einem Aufhebungsvertrag kann die Agentur für Arbeit das Geld bis zu 12 Wochen sperren, wenn sie keinen wichtigen Grund sieht. Ein Ende, das die Kündigungsfrist einhält, und eine sonst drohende Kündigung sprechen für Sie (§ 159 SGB III).', 'Unemployment benefit: signing a termination agreement can lead to a suspension of up to 12 weeks if the employment agency sees no good reason. An end that respects the notice period and a dismissal that would otherwise have come count in your favour (s. 159 SGB III).'),
     };
   },
   doc: (v) => {

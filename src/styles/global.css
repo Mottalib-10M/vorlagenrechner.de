@@ -84,6 +84,11 @@ form .grid-cols-\[1fr_auto\] { grid-template-columns: minmax(0, 1fr) auto; }
 form :is(.grid-cols-2, .grid-cols-\[1fr_auto\]) > * { grid-template-columns: minmax(0, 1fr); }
 form :is(.grid-cols-2, .grid-cols-\[1fr_auto\]) > :first-child > [id$="-help"] { width: 100cqw; }
 form :is(.grid-cols-2, .grid-cols-\[1fr_auto\]):has(> :nth-child(2) [id$="-help"]) > :first-child > [id$="-help"] { width: auto; }
+/* Champ de gauche hors première place (DocTool pose .aide-large quand le voisin de droite n'a pas d'aide).
+   La rangée des Vorlagen est « grid-cols-1 sm:grid-cols-2 » : la règle ci-dessus (.grid-cols-2) ne la voyait pas. */
+form .sm\:grid-cols-2:has(> .aide-large) { container-type: inline-size; }
+form .sm\:grid-cols-2 > .aide-large { grid-template-columns: minmax(0, 1fr); }
+form .sm\:grid-cols-2 > .aide-large > [id$="-help"] { width: 100cqw; }
 
 /* §10.2 : la typographie porte le design. Titres en serif, corps en sans-serif ;
    tableaux de style journal (filet sous l'en-tete, pas de bordures verticales,
