@@ -28,6 +28,8 @@ h1, h2, h3, h4 { overflow-wrap: break-word; }
 
 /* Rythme vertical (RECETTE §10.3) : le contenu ne touche jamais le calculateur. */
 .rechner { margin-bottom: 3rem; }
+/* Téléphone : un champ qui prend le focus s'arrête sous le menu (4 rem) et la barre du chiffre clé (jusqu'à 2 lignes), libellé visible (kit.tsx, 2026-11-14). */
+@media (max-width: 1023px) { html:has([data-barre-cle]) { scroll-padding-top: 9.5rem; } }
 .prose .overflow-x-auto { margin-top: 1.75em; margin-bottom: 1.75em; } .prose .overflow-x-auto > table { margin-top: 0; margin-bottom: 0; }
 
 /* Tableaux sur mobile (audit du 2026-10-28 : 85 sites sur 202 avaient un tableau plus large que

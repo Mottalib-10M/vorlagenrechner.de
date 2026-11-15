@@ -2,7 +2,7 @@
  * Défauts relevés par les testeurs naïfs du 2026-11-14 sur vorlagenrechner.de (RECETTE §15.8) :
  *  1. dates déjà passées affichées sans « verpasst » (Fitnessstudio, Strom) ; exemples par défaut à échéance future ;
  *  2. champ date natif lu au format américain (« 04/01/2025 ») → champ texte TT.MM.JJJJ ;
- *  3. barre de résultat collée en bas masquée pendant la saisie ;
+ *  3. barre du chiffre clé : dans le flux en tête du calculateur, collée sous le menu, texte non tronqué (3e tour) ;
  *  4. jargon : « Recht: ab 1. März 2022 », « Altvertrag », « Spätester Zugang dafür », Faustformel présentée comme un droit,
  *     « Frist des Vermieters nach 8 Jahren » ; références de loi sorties des phrases ;
  *  5. tableaux d'exemples : la date en tête de fiche porte le nom de sa colonne.
@@ -95,11 +95,15 @@ describe('2. champ date : texte TT.MM.JJJJ, jamais natif', () => {
   });
 });
 
-describe('3. barre collée en bas', () => {
-  it('se retire pendant la saisie', () => {
+describe('3. barre du chiffre clé', () => {
+  it('dans le flux, en tête du calculateur, jamais par-dessus un champ, texte non tronqué (3e tour)', () => {
     const src = readFileSync(new URL('../src/components/calc/kit.tsx', import.meta.url), 'utf8');
-    expect(src).toMatch(/below && key && !saisie/);
-    expect(src).toMatch(/onFocus=/);
+    const css = readFileSync(new URL('../src/styles/global.css', import.meta.url), 'utf8');
+    expect(src).toMatch(/data-barre-cle/);
+    expect(src).toMatch(/className=\{`sticky top-16 /);
+    expect(src).not.toMatch(/fixed inset-x-0 bottom-0/);
+    expect(src).not.toMatch(/truncate/);
+    expect(css).toMatch(/\[data-barre-cle\][^}]*scroll-padding-top/);
   });
 });
 
